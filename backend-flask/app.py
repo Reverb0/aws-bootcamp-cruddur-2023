@@ -1,9 +1,11 @@
+import services.show_activity as show_activity
 from flask import Flask
 from flask import request
 from flask_cors import CORS, cross_origin
 import os
 
 from services.home_activities import *
+from services.notifications_activations import *
 from services.user_activities import *
 from services.create_activity import *
 from services.create_reply import *
@@ -65,6 +67,11 @@ def data_home():
   data = HomeActivities.run()
   return data, 200
 
+@app.route("/api/activities/notifications", methods=['GET'])
+def data_notifications():
+  data = NotificationsActivities.run()
+  return data, 200 
+
 @app.route("/api/activities/@<string:handle>", methods=['GET'])
 def data_handle(handle):
   model = UserActivities.run(handle)
@@ -98,7 +105,7 @@ def data_activities():
 
 @app.route("/api/activities/<string:activity_uuid>", methods=['GET'])
 def data_show_activity(activity_uuid):
-  data = ShowActivity.run(activity_uuid=activity_uuid)
+  data = ShowActivities.run(activity_uuid=activity_uuid)
   return data, 200
 
 @app.route("/api/activities/<string:activity_uuid>/reply", methods=['POST','OPTIONS'])
